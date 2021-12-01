@@ -155,15 +155,54 @@ class BuiltInFunction(BaseFunction):
   
   def execute_simple_interest(self, exec_ctx):
     principal = float(str(exec_ctx.symbol_table.get("value1")))
-    time = float(str(exec_ctx.symbol_table.get("value2")))
-    rate= float(str(exec_ctx.symbol_table.get("value3")))
+    period = float(str(exec_ctx.symbol_table.get("value2")))
+    interest_rate= float(str(exec_ctx.symbol_table.get("value3")))
 
-    simpleInterest = principal*time*rate/100
+    simple_interest = principal*period*interest_rate/100
     
-    return RunTimeResult().success(Number(simpleInterest))
+    return RunTimeResult().success(Number(simple_interest))
   execute_simple_interest.arg_names = ["value1","value2","value3"]
 
+  def execute_compound_amount(self, exec_ctx):
+    present_value = float(str(exec_ctx.symbol_table.get("value1")))
+    interest_rate = float(str(exec_ctx.symbol_table.get("value2")))
+    period = float(str(exec_ctx.symbol_table.get("value3")))
+
+    compound_amount = present_value*(1+interest_rate)**period
+
+    return RunTimeResult().success(Number(compound_amount))
+  execute_compound_amount.arg_names = ["value1","value2","value3"]
+
+  def execute_series_compound_amount(self, exec_ctx):
+    A = float(str(exec_ctx.symbol_table.get("value1")))
+    interest_rate = float(str(exec_ctx.symbol_table.get("value2")))
+    period = float(str(exec_ctx.symbol_table.get("value3")))
+
+    series_compound_amount = A*((((1+interest_rate)**period)-1)/interest_rate)
+
+    return RunTimeResult().success(Number(series_compound_amount))
+  execute_series_compound_amount.arg_names = ["value1","value2","value3"]
+
+  def execute_sinking_fund(self, exec_ctx):
+    F = float(str(exec_ctx.symbol_table.get("value1")))
+    interest_rate = float(str(exec_ctx.symbol_table.get("value2")))
+    period = float(str(exec_ctx.symbol_table.get("value3")))
+
+    sinking_fund = F*(interest_rate/(((1+interest_rate)**period)-1))
+
+    return RunTimeResult().success(Number(sinking_fund))
+  execute_sinking_fund.arg_names = ["value1","value2","value3"]
+
+  def execute_capital_recovery(self, exec_ctx):
+    P = float(str(exec_ctx.symbol_table.get("value1")))
+    interest_rate = float(str(exec_ctx.symbol_table.get("value2")))
+    period = float(str(exec_ctx.symbol_table.get("value3")))
+
+    capital_recovery = P*((interest_rate*(1+interest_rate)**period)/(((1+interest_rate)**period)-1))
+    return RunTimeResult().success(Number(capital_recovery))
+  execute_capital_recovery.arg_names = ["value1","value2","value3"]
   ###################### End ##################################
+
   def execute_append(self, exec_ctx):
     list_ = exec_ctx.symbol_table.get("list")
     value = exec_ctx.symbol_table.get("value")
@@ -290,13 +329,17 @@ BuiltInFunction.clear       = BuiltInFunction("clear")
 
 ####################### Business Functions  ###################
 #Probability and Statistics
-BuiltInFunction.mean                = BuiltInFunction("mean")
-BuiltInFunction.variance            = BuiltInFunction("variance")
-BuiltInFunction.standard_deviation  = BuiltInFunction("standard_deviation")
+BuiltInFunction.mean                     = BuiltInFunction("mean")
+BuiltInFunction.variance                 = BuiltInFunction("variance")
+BuiltInFunction.standard_deviation       = BuiltInFunction("standard_deviation")
 
 #Economical Analysis
-BuiltInFunction.present_value       = BuiltInFunction("present_value")
-BuiltInFunction.simple_interest     = BuiltInFunction("simple_interest")
+BuiltInFunction.present_value            = BuiltInFunction("present_value")
+BuiltInFunction.simple_interest          = BuiltInFunction("simple_interest")
+BuiltInFunction.compound_amount          = BuiltInFunction("compound_amount")
+BuiltInFunction.series_compound_amount   = BuiltInFunction("series_compound_amount")
+BuiltInFunction.sinking_fund             = BuiltInFunction("sinking_fund")
+BuiltInFunction.capital_recovery         = BuiltInFunction("capital_recovery")
 
 ########################## End #################################
 
@@ -338,6 +381,10 @@ global_symbol_table.set("STANDARD_DEVIATION", BuiltInFunction.standard_deviation
 #Economical Analysis
 global_symbol_table.set("PRESENT_VALUE", BuiltInFunction.present_value)
 global_symbol_table.set("SIMPLE_INTEREST", BuiltInFunction.simple_interest)
+global_symbol_table.set("COMPOUND_AMOUNT", BuiltInFunction.compound_amount )
+global_symbol_table.set("SERIES_COMPOUND_AMOUNT", BuiltInFunction.series_compound_amount)
+global_symbol_table.set("SINKING_FUND", BuiltInFunction.sinking_fund)
+global_symbol_table.set("CAPITAL_RECOVERY", BuiltInFunction.capital_recovery)
 
 ########################## End ##################################
 
