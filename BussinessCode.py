@@ -113,8 +113,25 @@ class BuiltInFunction(BaseFunction):
     return RunTimeResult().success(variance)
   execute_variance.arg_names = ["list"]
 
-  ###################### End ##################################
+  
+###Simple interest
+  def execute_simpleinterest(self, exec_ctx):
+      principal = float(str(exec_ctx.symbol_table.get("value1")))
+      time = float(str(exec_ctx.symbol_table.get("value2")))
+      rate= float(str(exec_ctx.symbol_table.get("value3")))
 
+      simpleInterest = Number(principal*time*rate/100)
+      
+      return RunTimeResult().success(simpleInterest)
+  execute_simpleinterest.arg_names = ["value1","value2","value3"]
+
+   
+
+
+
+
+
+  ###################### End ##################################
   def execute_append(self, exec_ctx):
     list_ = exec_ctx.symbol_table.get("list")
     value = exec_ctx.symbol_table.get("value")
@@ -241,7 +258,7 @@ BuiltInFunction.clear       = BuiltInFunction("clear")
 
 ####################### Added by Us #############################
 BuiltInFunction.variance       = BuiltInFunction("variance")
-
+BuiltInFunction.simpleinterest       = BuiltInFunction("simpleinterest")
 ########################## End ##################################
 
 
@@ -275,7 +292,7 @@ global_symbol_table.set("CLS", BuiltInFunction.clear)
 
 ####################### Added by Us #############################
 global_symbol_table.set("VARIANCE", BuiltInFunction.variance)
-
+global_symbol_table.set("SIMPLEINTEREST", BuiltInFunction.simpleinterest)
 ########################## End ##################################
 
 ############ I Believe It Could Be Deleted ####################
