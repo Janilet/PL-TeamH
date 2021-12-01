@@ -94,24 +94,65 @@ class BuiltInFunction(BaseFunction):
 ###################### END ####################################
 
 ###################### ADDED by Us ############################
+
+#ININ4010
+  def execute_mean(self, exec_ctx):
+    list_ = exec_ctx.symbol_table.get("list")
+    n = len(list_.elements)
+
+    elementSum = float(0.0)
+    for element in list_.elements:
+      elementSum += float(str(element))
+    mean = elementSum/n
+
+    return RunTimeResult().success(Number(mean))
+  execute_mean.arg_names = ["list"]
+
   def execute_variance(self, exec_ctx):
     list_ = exec_ctx.symbol_table.get("list")
-
     n = len(list_.elements)
     
     elementSum = float(0.0)
     for element in list_.elements:
       elementSum += float(str(element))
-
     mean = elementSum/n
 
     deviations = []
     for element in list_.elements:
       deviations.append(((float(str(element)))-mean)**2)
 
-    variance = Number((sum(deviations))/(n-1))
-    return RunTimeResult().success(variance)
+    variance = (sum(deviations))/(n-1)
+    return RunTimeResult().success(Number(variance))
   execute_variance.arg_names = ["list"]
+
+  def execute_standard_deviation(self, exec_ctx):
+    list_ = exec_ctx.symbol_table.get("list")
+    n = len(list_.elements)
+    
+    elementSum = float(0.0)
+    for element in list_.elements:
+      elementSum += float(str(element))
+    mean = elementSum/n
+
+    deviations = []
+    for element in list_.elements:
+      deviations.append(((float(str(element)))-mean)**2)
+
+    variance = (sum(deviations))/(n-1)
+    standard_deviation = math.sqrt(variance)
+
+    return RunTimeResult().success(Number(standard_deviation))
+  execute_standard_deviation.arg_names = ["list"]
+
+  #ININ4015
+  def execute_present_value(self, exec_ctx):
+    FV = float(str(exec_ctx.symbol_table.get("value1")))
+    r = float(str(exec_ctx.symbol_table.get("value2")))
+    n = float(str(exec_ctx.symbol_table.get("value3")))
+  
+    present_value = FV/(1+r)**n
+    return RunTimeResult().success(Number(present_value))
+  execute_present_value.arg_names = ["value1","value2","value3"]
 
   ###################### End ##################################
 
@@ -240,7 +281,13 @@ BuiltInFunction.input_int   = BuiltInFunction("input_int")
 BuiltInFunction.clear       = BuiltInFunction("clear")
 
 ####################### Added by Us #############################
-BuiltInFunction.variance       = BuiltInFunction("variance")
+#Inin4010
+BuiltInFunction.mean                = BuiltInFunction("mean")
+BuiltInFunction.variance            = BuiltInFunction("variance")
+BuiltInFunction.standard_deviation  = BuiltInFunction("standard_deviation")
+
+#Inin4015
+BuiltInFunction.present_value       = BuiltInFunction("present_value")
 
 ########################## End ##################################
 
@@ -274,7 +321,13 @@ global_symbol_table.set("CLEAR", BuiltInFunction.clear)
 global_symbol_table.set("CLS", BuiltInFunction.clear)
 
 ####################### Added by Us #############################
+#Inin4010
+global_symbol_table.set("MEAN", BuiltInFunction.mean)
 global_symbol_table.set("VARIANCE", BuiltInFunction.variance)
+global_symbol_table.set("STANDARD_DEVIATION", BuiltInFunction.standard_deviation)
+
+#Inin4015
+global_symbol_table.set("PRESENT_VALUE", BuiltInFunction.present_value)
 
 ########################## End ##################################
 
