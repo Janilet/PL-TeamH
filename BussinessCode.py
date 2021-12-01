@@ -93,9 +93,8 @@ class BuiltInFunction(BaseFunction):
   execute_is_function.arg_names = ["value"]
 ###################### END ####################################
 
-###################### ADDED by Us ############################
-
-#ININ4010
+##################### Business Functions ############################
+#Probability and Statistics
   def execute_mean(self, exec_ctx):
     list_ = exec_ctx.symbol_table.get("list")
     n = len(list_.elements)
@@ -144,18 +143,27 @@ class BuiltInFunction(BaseFunction):
     return RunTimeResult().success(Number(standard_deviation))
   execute_standard_deviation.arg_names = ["list"]
 
-  #ININ4015
+  #Economical Analysis
   def execute_present_value(self, exec_ctx):
-    FV = float(str(exec_ctx.symbol_table.get("value1")))
-    r = float(str(exec_ctx.symbol_table.get("value2")))
-    n = float(str(exec_ctx.symbol_table.get("value3")))
+    future_value = float(str(exec_ctx.symbol_table.get("value1")))
+    interest_rate = float(str(exec_ctx.symbol_table.get("value2")))
+    period = float(str(exec_ctx.symbol_table.get("value3")))
   
-    present_value = FV/(1+r)**n
+    present_value = future_value/(1+interest_rate)**period
     return RunTimeResult().success(Number(present_value))
   execute_present_value.arg_names = ["value1","value2","value3"]
+  
+  def execute_simple_interest(self, exec_ctx):
+    principal = float(str(exec_ctx.symbol_table.get("value1")))
+    time = float(str(exec_ctx.symbol_table.get("value2")))
+    rate= float(str(exec_ctx.symbol_table.get("value3")))
+
+    simpleInterest = principal*time*rate/100
+    
+    return RunTimeResult().success(Number(simpleInterest))
+  execute_simple_interest.arg_names = ["value1","value2","value3"]
 
   ###################### End ##################################
-
   def execute_append(self, exec_ctx):
     list_ = exec_ctx.symbol_table.get("list")
     value = exec_ctx.symbol_table.get("value")
@@ -280,16 +288,17 @@ BuiltInFunction.input       = BuiltInFunction("input")
 BuiltInFunction.input_int   = BuiltInFunction("input_int")
 BuiltInFunction.clear       = BuiltInFunction("clear")
 
-####################### Added by Us #############################
-#Inin4010
+####################### Business Functions  ###################
+#Probability and Statistics
 BuiltInFunction.mean                = BuiltInFunction("mean")
 BuiltInFunction.variance            = BuiltInFunction("variance")
 BuiltInFunction.standard_deviation  = BuiltInFunction("standard_deviation")
 
-#Inin4015
+#Economical Analysis
 BuiltInFunction.present_value       = BuiltInFunction("present_value")
+BuiltInFunction.simple_interest     = BuiltInFunction("simple_interest")
 
-########################## End ##################################
+########################## End #################################
 
 
 ############ I Believe It Could Be Deleted ####################
@@ -320,14 +329,15 @@ global_symbol_table.set("INPUT_INT", BuiltInFunction.input_int)
 global_symbol_table.set("CLEAR", BuiltInFunction.clear)
 global_symbol_table.set("CLS", BuiltInFunction.clear)
 
-####################### Added by Us #############################
-#Inin4010
+####################### Business Functions #############################
+#Probability and Statistics
 global_symbol_table.set("MEAN", BuiltInFunction.mean)
 global_symbol_table.set("VARIANCE", BuiltInFunction.variance)
 global_symbol_table.set("STANDARD_DEVIATION", BuiltInFunction.standard_deviation)
 
-#Inin4015
+#Economical Analysis
 global_symbol_table.set("PRESENT_VALUE", BuiltInFunction.present_value)
+global_symbol_table.set("SIMPLE_INTEREST", BuiltInFunction.simple_interest)
 
 ########################## End ##################################
 
