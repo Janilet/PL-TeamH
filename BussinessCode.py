@@ -93,6 +93,28 @@ class BuiltInFunction(BaseFunction):
   execute_is_function.arg_names = ["value"]
 ###################### END ####################################
 
+###################### ADDED by Us ############################
+  def execute_variance(self, exec_ctx):
+    list_ = exec_ctx.symbol_table.get("list")
+
+    n = len(list_.elements)
+    
+    elementSum = float(0.0)
+    for element in list_.elements:
+      elementSum += float(str(element))
+
+    mean = elementSum/n
+
+    deviations = []
+    for element in list_.elements:
+      deviations.append(((float(str(element)))-mean)**2)
+
+    variance = Number((sum(deviations))/(n-1))
+    return RunTimeResult().success(variance)
+  execute_variance.arg_names = ["list"]
+
+  ###################### End ##################################
+
   def execute_append(self, exec_ctx):
     list_ = exec_ctx.symbol_table.get("list")
     value = exec_ctx.symbol_table.get("value")
@@ -217,6 +239,12 @@ BuiltInFunction.input       = BuiltInFunction("input")
 BuiltInFunction.input_int   = BuiltInFunction("input_int")
 BuiltInFunction.clear       = BuiltInFunction("clear")
 
+####################### Added by Us #############################
+BuiltInFunction.variance       = BuiltInFunction("variance")
+
+########################## End ##################################
+
+
 ############ I Believe It Could Be Deleted ####################
 BuiltInFunction.is_number   = BuiltInFunction("is_number")
 BuiltInFunction.is_string   = BuiltInFunction("is_string")
@@ -244,6 +272,11 @@ global_symbol_table.set("INPUT", BuiltInFunction.input)
 global_symbol_table.set("INPUT_INT", BuiltInFunction.input_int)
 global_symbol_table.set("CLEAR", BuiltInFunction.clear)
 global_symbol_table.set("CLS", BuiltInFunction.clear)
+
+####################### Added by Us #############################
+global_symbol_table.set("VARIANCE", BuiltInFunction.variance)
+
+########################## End ##################################
 
 ############ I Believe It Could Be Deleted ####################
 global_symbol_table.set("IS_NUM", BuiltInFunction.is_number)
